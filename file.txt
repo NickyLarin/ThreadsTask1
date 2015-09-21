@@ -1,0 +1,262 @@
+/home/nicky/.clion11/system/cmake/generated/97eff965/97eff965/Debug/ThreadTest1
+worker started id: -1418770688
+worker -1418770688 waiting for strings
+worker started id: -1427163392
+worker -1427163392 waiting for strings
+worker started id: -1543506176
+worker -1543506176 waiting for strings
+reader have read line: 5 6 7 8
+worker -1418770688 got string: 5 6 7 8
+worker -1418770688 res: 5
+worker -1418770688 parsed 5
+worker -1418770688 res: 6
+worker -1418770688 parsed 6
+worker -1418770688 res: 7
+worker -1418770688 parsed 7
+worker -1418770688 res: 8
+worker -1418770688 parsed 8
+writer started id: -1443948800
+worker -1418770688 sum: 26
+worker -1418770688 waiting for strings
+reader have read line: 9 2
+reader have read line: 4 9 1
+reader have read line: 1 2 4
+worker -1418770688 got string: 1 2 4
+worker started id: -1435556096
+worker -1435556096 waiting for strings
+worker -1418770688 res: 1
+worker -1418770688 parsed 1
+worker -1418770688 res: 2
+worker -1418770688 parsed 2
+worker -1418770688 res: 4
+worker -1418770688 parsed 4
+worker -1418770688 sum: 7
+worker -1418770688 waiting for strings
+worker -1427163392 got string: 4 9 1
+worker -1427163392 res: 4
+worker -1427163392 parsed 4
+worker -1427163392 res: 9
+worker -1427163392 parsed 9
+worker -1427163392 res: 1
+worker -1427163392 parsed 1
+reader have read line: 2 4 5
+worker -1427163392 sum: 14
+worker -1427163392 got string: 2 4 5
+worker -1427163392 res: 2
+worker -1427163392 parsed 2
+worker -1427163392 res: 4
+worker -1427163392 parsed 4
+worker -1427163392 res: 5
+worker -1543506176 got string: 9 2
+worker -1543506176 res: 9
+worker -1543506176 parsed 9
+worker -1543506176 res: 2
+worker -1543506176 parsed 2
+worker -1543506176 sum: 11
+worker -1543506176 waiting for strings
+worker -1435556096 waiting for strings
+reader have read line: 3 6
+worker -1427163392 parsed 5
+worker -1427163392 sum: 11
+worker -1427163392 waiting for strings
+reader have read line: 2 6 7
+reader have read line: 6 6 2 1
+worker -1418770688 got string: 3 6
+worker -1418770688 res: 3
+worker -1418770688 parsed 3
+worker -1418770688 res: 6
+worker -1418770688 parsed 6
+worker -1418770688 sum: 9
+worker -1543506176 got string: 2 6 7
+worker -1543506176 res: 2
+worker -1543506176 parsed 2
+worker -1543506176 res: 6
+worker -1543506176 parsed 6
+worker -1543506176 res: 7
+worker -1543506176 parsed 7
+worker -1543506176 sum: 15
+worker -1543506176 waiting for strings
+worker -1418770688 got string: 6 6 2 1
+worker -1418770688 res: 6
+worker -1418770688 parsed 6
+worker -1418770688 res: 6
+worker -1418770688 parsed 6
+worker -1418770688 res: 2
+worker -1418770688 parsed 2
+worker -1418770688 res: 1
+worker -1418770688 parsed 1
+worker -1418770688 sum: 15
+worker -1418770688 waiting for strings
+reader have read line: 8 6 8 1
+worker -1435556096 waiting for strings
+reader have read line: 2 4 5
+worker -1427163392 got string: 8 6 8 1
+worker -1427163392 res: 8
+worker -1427163392 parsed 8
+worker -1427163392 res: 6
+worker -1427163392 parsed 6
+worker -1427163392 res: 8
+worker -1427163392 parsed 8
+worker -1427163392 res: 1
+writer wrote result: 11
+reader have read line: 1 7
+worker -1427163392 parsed 1
+worker -1427163392 sum: 23
+worker -1427163392 got string: 1 7
+worker -1427163392 res: 1
+worker -1427163392 parsed 1
+worker -1427163392 res: 7
+worker -1427163392 parsed 7
+worker -1427163392 sum: 8
+worker -1427163392 waiting for strings
+worker -1543506176 got string: 2 4 5
+worker -1543506176 res: 2
+worker -1543506176 parsed 2
+worker -1543506176 res: 4
+worker -1543506176 parsed 4
+worker -1543506176 res: 5
+worker -1543506176 parsed 5
+worker -1543506176 sum: 11
+worker -1543506176 waiting for strings
+worker -1418770688 waiting for strings
+reader have read line: 5 2
+reader have read line: 7 4 5
+worker -1435556096 got string: 5 2
+worker -1435556096 res: 5
+worker -1435556096 parsed 5
+worker -1435556096 res: 2
+worker -1435556096 parsed 2
+worker -1435556096 sum: 7
+worker -1435556096 waiting for strings
+reader have read line: 4 9 1
+worker -1427163392 got string: 7 4 5
+worker -1427163392 res: 7
+worker -1427163392 parsed 7
+worker -1427163392 res: 4
+worker -1427163392 parsed 4
+worker -1427163392 res: 5
+worker -1427163392 parsed 5
+worker -1427163392 sum: 16
+reader have read line: 5 9
+worker -1427163392 got string: 4 9 1
+worker -1427163392 res: 4
+worker -1427163392 parsed 4
+worker -1427163392 res: 9
+worker -1427163392 parsed 9
+worker -1427163392 res: 1
+worker -1427163392 parsed 1
+reader have read line: 5 4 5
+worker -1418770688 got string: 5 9
+worker -1418770688 res: 5
+reader have read line: 7 0
+worker -1427163392 sum: 14
+worker -1435556096 got string: 5 4 5
+worker -1418770688 parsed 5
+writer wrote result: 26
+worker -1427163392 got string: 7 0
+worker -1543506176 waiting for strings
+worker -1435556096 res: 5
+worker -1435556096 parsed 5
+worker -1435556096 res: 0
+worker -1435556096 parsed 0
+worker -1435556096 sum: 5
+worker -1435556096 waiting for strings
+worker -1418770688 res: 4
+worker -1418770688 parsed 4
+worker -1418770688 sum: 9
+worker -1427163392 res: 7
+worker -1427163392 parsed 7
+worker -1427163392 sum: 7
+worker -1427163392 waiting for strings
+worker -1418770688 waiting for strings
+reader have read line: 8 4
+reader have read line: 4 5
+reader have read line: 1 1
+reader have read line: 5 9 1
+reader have read line: 7 5
+reader have read line: 8 1
+reader have read line: 5 9
+reader have read line: 4 0 8 1
+worker -1418770688 got string: 5 9 1
+worker -1418770688 res: 5
+worker -1418770688 parsed 5
+worker -1418770688 res: 9
+worker -1418770688 parsed 9
+worker -1418770688 res: 1
+worker -1418770688 parsed 1
+worker -1418770688 sum: 15
+worker -1418770688 got string: 4 0 8 1
+worker -1418770688 res: 4
+worker -1418770688 parsed 4
+worker -1418770688 res: 0
+worker -1418770688 parsed 0
+worker -1418770688 res: 8
+worker -1418770688 parsed 8
+worker -1418770688 res: 1
+worker -1418770688 parsed 1
+worker -1418770688 sum: 13
+worker -1418770688 got string: 5 9
+worker -1418770688 res: 5
+worker -1418770688 parsed 5
+worker -1418770688 res: 9
+worker -1418770688 parsed 9
+worker -1418770688 sum: 14
+worker -1418770688 got string: 8 1
+worker -1418770688 res: 8
+worker -1418770688 parsed 8
+worker -1418770688 res: 1
+worker -1418770688 parsed 1
+worker -1418770688 sum: 9
+worker -1418770688 got string: 7 5
+worker -1418770688 res: 7
+worker -1418770688 parsed 7
+worker -1418770688 res: 5
+worker -1418770688 parsed 5
+worker -1418770688 sum: 12
+worker -1418770688 waiting for strings
+writer wrote result: 40
+worker -1427163392 got string: 1 1
+worker -1427163392 res: 1
+worker -1427163392 parsed 1
+worker -1427163392 res: 1
+worker -1427163392 parsed 1
+worker -1427163392 sum: 2
+worker -1543506176 got string: 8 4
+worker -1543506176 res: 8
+worker -1543506176 parsed 8
+worker -1543506176 res: 4
+worker -1543506176 parsed 4
+worker -1543506176 sum: 12
+worker -1543506176 waiting for strings
+worker -1435556096 got string: 4 5
+worker -1435556096 res: 4
+worker -1435556096 parsed 4
+worker -1435556096 res: 5
+worker -1435556096 parsed 5
+worker -1435556096 sum: 9
+worker -1435556096 waiting for strings
+worker -1427163392 waiting for strings
+writer wrote result: 52
+writer wrote result: 61
+writer wrote result: 73
+writer wrote result: 75
+writer wrote result: 84
+writer wrote result: 98
+writer wrote result: 111
+writer wrote result: 126
+writer wrote result: 133
+writer wrote result: 142
+writer wrote result: 147
+writer wrote result: 163
+writer wrote result: 170
+writer wrote result: 181
+writer wrote result: 189
+writer wrote result: 212
+writer wrote result: 227
+writer wrote result: 236
+writer wrote result: 247
+writer wrote result: 261
+writer wrote result: 268
+writer wrote result: 294
+writer waiting for sums
+
