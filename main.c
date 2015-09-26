@@ -8,7 +8,7 @@
 #include "stack_int.h"
 
 #define MAX_CHARS 100
-#define WORKERS 4
+#define WORKERS 2
 
 struct ReaderArgs
 {
@@ -50,7 +50,7 @@ void * reader(void * arg)
     {
         if(fgets(c, MAX_CHARS, fptr))
         {
-            printf("reader have read line: %s", c);
+            //printf("reader have read line: %s", c);
             pthread_mutex_lock(r_args->string_stack_mutex);
             stackPush(r_args->string_stack, c);
             pthread_mutex_unlock(r_args->string_stack_mutex);
@@ -58,6 +58,17 @@ void * reader(void * arg)
         }
     }
     fclose(fptr);
+}
+
+void prepareString(char *string)
+{
+	for(int i=0;i<strlen(string);i++)
+	{
+		if(string[i]=='\n')
+		{
+			string[i]='\0';
+		}
+	}
 }
 
 void * worker(void * arg)
@@ -69,19 +80,24 @@ void * worker(void * arg)
     {
         if(w_args->string_stack->size>0)
         {
-            char c[MAX_CHARS];
+            char string[MAX_CHARS];
             pthread_mutex_lock(w_args->string_stack_mutex);
-            stackPop(w_args->string_stack, c);
+            stackPop(w_args->string_stack, string);
             pthread_mutex_unlock(w_args->string_stack_mutex);
-            printf("worker %d got string: %s", id, c);
+			//prepareString(string);
+            printf("worker %d got string: %s", id, string);
             const char separator[] = " \n";
             int sum = 0;
-            char *res = strtok(c, separator);
+			int a = 0;
+			char *z;
+            char *res = strtok_r(string, separator, &z);
             while(res != NULL)
             {
-                printf("worker %d res: %s\n", id, res);
-                sum += (int)strtol(res, NULL , 10);
-                res = strtok(NULL, separator);
+				a = (int)strtol(res, NULL , 10);
+				printf("worker %d res: %d pointer: %p\n", id, a, &a);
+                sum += a;
+				//printf("worker %d sum: %d addr: %p\n", id, sum, &sum);
+                res = strtok_r(NULL, separator, &z);
             }
             printf("worker %d sum: %d\n", id, sum);
             pthread_mutex_lock(w_args->int_stack_mutex);
@@ -101,7 +117,7 @@ void * worker(void * arg)
 
 void * writer(void * arg)
 {
-    printf("writer started id: %d\n", (int)pthread_self());
+    //printf("writer started id: %d\n", (int)pthread_self());
     WriterArgs *wr_args = arg;
     FILE *fptr;
     fptr = fopen("output.txt", "w");
@@ -118,11 +134,11 @@ void * writer(void * arg)
             fptr = fopen("output.txt", "w");
             fprintf(fptr, "%d", result);
             fclose(fptr);
-            printf("writer wrote result: %d\n", result);
+            //printf("writer wrote result: %d\n", result);
         }
         else
         {
-            printf("writer waiting for sums\n");
+            //printf("writer waiting for sums\n");
             pthread_mutex_lock(wr_args->int_stack_cond_mutex);
             pthread_cond_wait(wr_args->int_stack_condition, wr_args->int_stack_cond_mutex);
             pthread_mutex_unlock(wr_args->int_stack_cond_mutex);
@@ -180,5 +196,5 @@ int main()
     pthread_t writer_t;
     pthread_create(&writer_t, NULL, writer, (void *)&wr_args);
 
-    sleep(5);
+    sleep(3);
 }
