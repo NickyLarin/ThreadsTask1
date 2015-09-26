@@ -71,7 +71,7 @@ void * worker(void * arg)
         {
             char c[MAX_CHARS];
             pthread_mutex_lock(w_args->string_stack_mutex);
-            strcpy(c, stackPop(w_args->string_stack));
+            stackPop(w_args->string_stack, c);
             pthread_mutex_unlock(w_args->string_stack_mutex);
             printf("worker %d got string: %s", id, c);
             const char separator[] = " \n";
@@ -111,7 +111,9 @@ void * writer(void * arg)
         if(wr_args->int_stack->size>0)
         {
             pthread_mutex_lock(wr_args->int_stack_mutex);
-            result += stackIntPop(wr_args->int_stack);
+			int i;
+			stackIntPop(wr_args->int_stack, &i);
+            result += i;
             pthread_mutex_unlock(wr_args->int_stack_mutex);
             fptr = fopen("output.txt", "w");
             fprintf(fptr, "%d", result);
@@ -131,10 +133,10 @@ void * writer(void * arg)
 int main()
 {
     Stack string_stack;
-    stackInit(&string_stack);
+    stackInitialize(&string_stack, 100);
 
     StackInt int_stack;
-    stackIntInit(&int_stack);
+    stackIntInitialize(&int_stack, 100);
 
     pthread_mutex_t string_stack_mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_t int_stack_mutex = PTHREAD_MUTEX_INITIALIZER;

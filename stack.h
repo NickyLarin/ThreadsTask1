@@ -1,13 +1,13 @@
 #ifndef STACK_H
-	#define STACK_MAX 100
 	struct Stack
 	{
-		char * data[STACK_MAX];
+		char **data;
 		int size;
+		int max_size;
 	};
 	typedef struct Stack Stack;
-	void stackInit(Stack *S);
-	char * stackPop(Stack *S);
-	void stackPush(Stack *S, char *d);
+	void stackInitialize(Stack *s, int _max_size);
+	void stackPush(Stack *s, char *string);
+	void stackPop(Stack *s, char *new_string);
 	#define STACK_H
 #endif

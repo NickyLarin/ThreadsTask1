@@ -1,45 +1,50 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-#define STACK_MAX 100
 
-struct Stack {
-    char * data[STACK_MAX];
+struct Stack
+{
+    char **data;
     int size;
+    int max_size;
 };
 typedef struct Stack Stack;
 
-void stackInit(Stack *S)
+
+void stackInitialize(Stack *s, int _max_size)
 {
-    S->size = 0;
+    s->data = malloc(sizeof(char*)*_max_size);
+    s->size = 0;
+    s->max_size = _max_size;
 }
 
-char * stackPop(Stack *S)
-{
-    if (S->size == 0)
-    {
-        fprintf(stderr, "Error: stack empty\n");
-        return (char *)-1;
-    }
-    S->size--;
-    //char temp[100];
-    //strcpy(temp, S->data[S->size]);
-    //printf("%s", temp);
-    //free(S->data[S->size]);
-    return S->data[S->size];
-}
 
-void stackPush(Stack *S, char *d)
+void stackPush(Stack *s, char *string)
 {
-    if (S->size < STACK_MAX)
+    if(s->size < s->max_size)
     {
-        char *temp = malloc(sizeof(char)*strlen(d));
-        strcpy(temp, d);
-        S->data[S->size++] = temp;
+        s->data[s->size] = malloc(sizeof(char)*strlen(string));
+        strcpy(s->data[s->size], string);
+		s->size++;
     }
     else
     {
-        fprintf(stderr, "Error: stack full\n");
+		fprintf(stderr, "Error: Stack is full\n");
+    }
+}
+
+
+void stackPop(Stack *s, char *new_string)
+{
+    if(s->size == 0)
+    {
+		fprintf(stderr, "Error: Stack is empty\n");
+    }
+    else
+    {
+		s->size--;
+		strcpy(new_string, s->data[s->size]);
+		free(s->data[s->size]);
     }
 }

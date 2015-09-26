@@ -1,13 +1,13 @@
 #ifndef STACK_INT_H
-#define STACK_MAX 100
-struct StackInt
-{
-    int data[STACK_MAX];
-    int size;
-};
-typedef struct StackInt StackInt;
-void stackIntInit(StackInt *S);
-int stackIntPop(StackInt *S);
-void stackIntPush(StackInt *S, int d);
-#define STACK_INT_H
+	struct StackInt
+	{
+		int *data;
+		int size;
+		int max_size;
+	};
+	typedef struct StackInt StackInt;
+	void stackIntInitialize(StackInt *s, int _max_size);
+	void stackIntPush(StackInt *s, int i);
+	void stackIntPop(StackInt *s, int *new_i);
+	#define STACK_INT_H
 #endif

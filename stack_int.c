@@ -1,39 +1,49 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-#define STACK_MAX 100
 
-struct StackInt {
-    int data[STACK_MAX];
+struct StackInt
+{
+    int *data;
     int size;
+    int max_size;
 };
 typedef struct StackInt StackInt;
 
-void stackIntInit(StackInt *S)
+
+void stackIntInitialize(StackInt *s, int _max_size)
 {
-    S->size = 0;
+    s->data = malloc(sizeof(int)*_max_size);
+    s->size = 0;
+    s->max_size = _max_size;
 }
 
-int stackIntPop(StackInt *S)
-{
-    if (S->size == 0)
-    {
-        fprintf(stderr, "Error: stack empty\n");
-        return -1;
-    }
-    S->size--;
-    return S->data[S->size];
-}
 
-void stackIntPush(StackInt *S, int d)
+void stackIntPush(StackInt *s, int i)
 {
-    if (S->size < STACK_MAX)
+    if(s->size < s->max_size)
     {
-        S->data[S->size++] = d;
+        s->data[s->size] = i;
+		s->size++;
     }
     else
     {
-        fprintf(stderr, "Error: stack full\n");
+		fprintf(stderr, "Error: Stack is full\n");
     }
 }
+
+
+void stackIntPop(StackInt *s, int *new_i)
+{
+    if(s->size == 0)
+    {
+		fprintf(stderr, "Error: Stack is empty\n");
+    }
+    else
+    {
+		s->size--;
+		*new_i = s->data[s->size];
+    }
+}
+
