@@ -6,7 +6,6 @@
 #include <sys/time.h>
 
 #include "stack.h"
-#include "stack_int.h"
 
 #define MAX_CHARS 100
 #define WORKERS 4
@@ -28,7 +27,7 @@ typedef struct ReaderArgs ReaderArgs;
 struct WorkerArgs
 {
     Stack *string_stack;
-    StackInt *int_stack;
+    Stack *int_stack;
     pthread_mutex_t *string_stack_mutex;
     pthread_mutex_t *string_stack_cond_mutex;
     pthread_cond_t *string_stack_condition;
@@ -46,7 +45,7 @@ typedef struct WorkerArgs WorkerArgs;
 
 struct WriterArgs
 {
-    StackInt *int_stack;
+    Stack *int_stack;
     pthread_mutex_t *int_stack_mutex;
     pthread_mutex_t *int_stack_cond_mutex;
     pthread_cond_t *int_stack_condition;
@@ -114,7 +113,7 @@ void * worker(void * arg)
             }
             printf("worker %d sum: %d\n", id, sum);
             pthread_mutex_lock(w_args->int_stack_mutex);
-            stackIntPush(w_args->int_stack, sum);
+            stackPush(w_args->int_stack, &sum);
             pthread_mutex_unlock(w_args->int_stack_mutex);
 			pthread_mutex_lock(w_args->int_stack_cond_mutex);
             pthread_cond_signal(w_args->int_stack_condition);
@@ -162,7 +161,7 @@ void * writer(void * arg)
         {
 			int i;
             pthread_mutex_lock(wr_args->int_stack_mutex);
-			stackIntPop(wr_args->int_stack, &i);
+			stackPop(wr_args->int_stack, &i);
             pthread_mutex_unlock(wr_args->int_stack_mutex);
 			pthread_mutex_unlock(wr_args->int_stack_mutex);
 			result += i;
@@ -198,15 +197,16 @@ void * writer(void * arg)
 int main()
 {
     Stack string_stack;
-    stackInitialize(&string_stack, 100);
+    stackInitialize(&string_stack, 100, STACK_STRING);
 
-    StackInt int_stack;
-    stackIntInitialize(&int_stack, 100);
+    Stack int_stack;
+    stackInitialize(&int_stack, 100, STACK_INT);
 
     pthread_mutex_t int_stack_mutex;
 	pthread_mutex_t string_stack_mutex;
 	
 	pthread_mutexattr_t recursive_mutex_attr;
+	pthread_mutexattr_init(&recursive_mutex_attr);
 	pthread_mutexattr_settype(&recursive_mutex_attr, PTHREAD_MUTEX_RECURSIVE);
 
 	pthread_mutex_init(&int_stack_mutex, &recursive_mutex_attr);
@@ -290,5 +290,8 @@ int main()
 		printf("Main: writer stopped!\n");
 	}
 	
+	stackDestroy(&string_stack);
+	stackDestroy(&int_stack);
+
 	return 0;
 }

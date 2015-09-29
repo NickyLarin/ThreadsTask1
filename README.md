@@ -26,4 +26,4 @@
 
 
 Компиляция:
-gcc main.c stack.c stack_int.c -o main -lpthread -std=c11
+gcc main.c stack.c -o main -lpthread -std=gnu99

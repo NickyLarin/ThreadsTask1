@@ -2,40 +2,56 @@
 #include <string.h>
 #include <stdio.h>
 
-
 struct Stack
 {
-    char **data;
+    void *data;
     int size;
     int max_size;
+	int type;
 };
 typedef struct Stack Stack;
 
 
-void stackInitialize(Stack *s, int _max_size)
+void stackInitialize(Stack *s, int _max_size, int _type)
 {
-    s->data = malloc(sizeof(char*)*_max_size);
-    s->size = 0;
+	if(_type)
+	{
+    	s->data = (char**)malloc(sizeof(char*)*_max_size);
+	}
+	else
+	{
+		s->data = (int*)malloc(sizeof(int)*_max_size);
+	}
+	s->size = 0;
     s->max_size = _max_size;
+	s->type = _type;
 }
 
 
-void stackPush(Stack *s, char *string)
+void stackPush(Stack *s, void *value)
 {
-    if(s->size < s->max_size)
-    {
-        s->data[s->size] = malloc(sizeof(char)*strlen(string));
-        strcpy(s->data[s->size], string);
+	if(s->size < s->max_size)
+	{
+		if(s->type)
+		{
+			((char**)s->data)[s->size] = malloc(sizeof(char)*strlen((char *)value));
+			strcpy(((char**)s->data)[s->size], (char*)value);
+			
+		}
+		else
+		{
+			((int*)s->data)[s->size] = *(int*)value;
+		}
 		s->size++;
-    }
-    else
-    {
+	}
+	else
+	{
 		fprintf(stderr, "Error: Stack is full\n");
-    }
+	}
 }
 
 
-void stackPop(Stack *s, char *new_string)
+void stackPop(Stack *s, void *new_value)
 {
     if(s->size == 0)
     {
@@ -44,7 +60,19 @@ void stackPop(Stack *s, char *new_string)
     else
     {
 		s->size--;
-		strcpy(new_string, s->data[s->size]);
-		free(s->data[s->size]);
+		if(s->type)
+		{
+			strcpy(new_value, ((char**)s->data)[s->size]);
+			free(((char**)s->data)[s->size]);
+		}
+		else
+		{
+			*(int*)new_value = ((int*)s->data)[s->size];
+		}
     }
+}
+
+void stackDestroy(Stack *s)
+{
+	free(s->data);
 }
