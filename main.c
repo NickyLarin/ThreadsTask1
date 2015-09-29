@@ -34,6 +34,7 @@ struct WorkerArgs
     pthread_cond_t *string_stack_condition;
     pthread_mutex_t *int_stack_mutex;
     pthread_cond_t *int_stack_condition;
+	pthread_mutex_t *int_stack_cond_mutex;
 
 	pthread_mutex_t *read_done_mutex;
 	int *read_done;
@@ -115,7 +116,10 @@ void * worker(void * arg)
             pthread_mutex_lock(w_args->int_stack_mutex);
             stackIntPush(w_args->int_stack, sum);
             pthread_mutex_unlock(w_args->int_stack_mutex);
+			pthread_mutex_lock(w_args->int_stack_cond_mutex);
             pthread_cond_signal(w_args->int_stack_condition);
+            pthread_mutex_unlock(w_args->int_stack_cond_mutex);
+            
         }
         else
         {
@@ -237,8 +241,9 @@ int main()
     w_args.string_stack_mutex = &string_stack_mutex;
     w_args.string_stack_cond_mutex = &string_stack_cond_mutex;
     w_args.string_stack_condition = &string_stack_condition;
-    w_args.int_stack_condition = &int_stack_condition;
     w_args.int_stack_mutex = &int_stack_mutex;
+	w_args.int_stack_cond_mutex = &int_stack_cond_mutex;
+	w_args.int_stack_condition = &int_stack_condition;
 
 	w_args.read_done = &read_done;
 	w_args.read_done_mutex = &read_done_mutex;	
@@ -284,4 +289,6 @@ int main()
 	{
 		printf("Main: writer stopped!\n");
 	}
+	
+	return 0;
 }
