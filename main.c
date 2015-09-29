@@ -17,6 +17,9 @@ struct ReaderArgs
     Stack *string_stack;
     pthread_mutex_t *string_stack_mutex;
     pthread_cond_t *string_stack_condition;
+
+	pthread_mutex_t *read_done_mutex;
+	int *read_done;
 };
 typedef struct ReaderArgs ReaderArgs;
 
@@ -30,6 +33,11 @@ struct WorkerArgs
     pthread_mutex_t *int_stack_mutex;
     pthread_cond_t *int_stack_condition;
 
+	pthread_mutex_t *read_done_mutex;
+	int *read_done;
+
+	pthread_mutex_t *work_done_mutex;
+	int *work_done;
 };
 typedef struct WorkerArgs WorkerArgs;
 
@@ -39,6 +47,10 @@ struct WriterArgs
     pthread_mutex_t *int_stack_mutex;
     pthread_mutex_t *int_stack_cond_mutex;
     pthread_cond_t *int_stack_condition;
+
+	pthread_mutex_t *work_done_mutex;
+	int *work_done;
+	
 };
 typedef struct WriterArgs WriterArgs;
 
@@ -67,9 +79,10 @@ void * worker(void * arg)
     int id = (int)pthread_self();
     printf("worker started id: %d\n", id);
     WorkerArgs *w_args = arg;
-    while (1)
+	int cond = 0;
+    while (!cond)
     {
-        if(w_args->string_stack->size>0)
+        if(w_args->string_stack->size > 0)
         {
             char string[MAX_CHARS];
             pthread_mutex_lock(w_args->string_stack_mutex);
@@ -96,12 +109,19 @@ void * worker(void * arg)
         }
         else
         {
+			pthread_mutex_lock(w_args->read_done_mutex);
+			if(w_args->read_done)
+			{
+				cond = 1;
+			}
+        	pthread_mutex_unlock(w_args->read_done_mutex);
             printf("worker %d waiting for strings\n", id);
             pthread_mutex_lock(w_args->string_stack_cond_mutex);
             pthread_cond_wait(w_args->string_stack_condition, w_args->string_stack_cond_mutex);
             pthread_mutex_unlock(w_args->string_stack_cond_mutex);
         }
     }
+	printf("worker %d stopped\n", id);
 }
 
 void * writer(void * arg)
@@ -113,7 +133,7 @@ void * writer(void * arg)
     int result = 0;
     while(1)
     {
-        if(wr_args->int_stack->size>0)
+        if(wr_args->int_stack->size > 0)
         {
             pthread_mutex_lock(wr_args->int_stack_mutex);
 			int i;
@@ -152,10 +172,19 @@ int main()
     pthread_mutex_t string_stack_cond_mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_t int_stack_cond_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+	pthread_mutex_t read_done_mutex = PTHREAD_MUTEX_INITIALIZER;
+	int read_done = 0;	
+
+	pthread_mutex_t work_done_mutex = PTHREAD_MUTEX_INITIALIZER;
+	int work_done = 0;	
+
     ReaderArgs r_args;
     r_args.string_stack = &string_stack;
     r_args.string_stack_mutex = &string_stack_mutex;
     r_args.string_stack_condition = &string_stack_condition;
+	
+	r_args.read_done_mutex = &read_done_mutex;
+	r_args.read_done = &read_done;
 
     pthread_t reader_t;
     pthread_create(&reader_t, NULL, reader, (void *)&r_args);
@@ -168,6 +197,12 @@ int main()
     w_args.string_stack_condition = &string_stack_condition;
     w_args.int_stack_condition = &int_stack_condition;
     w_args.int_stack_mutex = &int_stack_mutex;
+
+	w_args.read_done = &read_done;
+	w_args.read_done_mutex = &read_done_mutex;	
+	
+	w_args.work_done = &work_done;
+	w_args.work_done_mutex = &work_done_mutex;
 
     pthread_t worker_t[WORKERS];
     for(int i = 0; i< WORKERS; i++)
@@ -182,8 +217,19 @@ int main()
     wr_args.int_stack_condition = &int_stack_condition;
     wr_args.int_stack_cond_mutex = &int_stack_cond_mutex;
 
+	wr_args.work_done = &work_done;
+	wr_args.work_done_mutex = &work_done_mutex;
+
     pthread_t writer_t;
     pthread_create(&writer_t, NULL, writer, (void *)&wr_args);
 
+
+	if(!pthread_join(reader_t, NULL))
+	{
+		printf("Reader stopped!\n");
+        pthread_mutex_lock(&read_done_mutex);
+		read_done = 1;
+        pthread_mutex_unlock(&read_done_mutex);
+	}
     sleep(3);
 }
